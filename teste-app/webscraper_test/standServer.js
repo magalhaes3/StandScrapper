@@ -1,39 +1,46 @@
-const puppeteer = require("puppeteer");
+const puppeteer = require("puppeteer-core");
 let url = "http://www.standvirtual.pt";
 
-(async () => {
-  const browser = await puppeteer.launch({ headless: true });
-  const page = await browser.newPage();
-  await page.goto(url);
+// const launchStandVirtual = async () => {
+//   // const browser = await puppeteer.launch({ headless: true });
+//   const browser = await puppeteer.launch({args:['--no-sandbox'], executablePath:'chromium-browser', headless: true});
+//   const page = await browser.newPage();
+//   await page.goto(url);
 
-  // const titulo = await page.title();
-  const [marcas] = await page.$x('//*[@id="param1"]');
-  const arr = await marcas.$x("option");
-  const element = arr[5];
-  const t = await element.getProperty('value').then((elm) => {return elm.jsonValue()});
-  console.log(t);
+//   // const [marcas] = await page.$x('//*[@id="param1"]');
+//   // const arr = await marcas.$x("option");
+//   // const element = arr[5];
+//   // const t = await element.getProperty('value').then((elm) => {return elm.jsonValue()});
+//   // console.log(t);
   
+//   // await browser.close();
 
-  console.log(arr.length);
-  
-  // const arr2 = await getBrand(arr);
+//   return page;
+// };
 
-  // arr2.forEach(element => {
-  //     console.log(element);
+const getBrand = async () => {
+  const browser = await puppeteer.launch({args:['--no-sandbox'], executablePath:'chromium-browser', headless: true});
+  const standPage = await browser.newPage();
+  await standPage.goto(url);
 
-  // });
+  const [marcas] = await standPage.$x('//*[@id="param1"]');
+  const options = await marcas.$x("option");
 
-  await browser.close();
-})();
-
-const getBrand = async options => {
   let ex = [];
   const ep = [...options];
-  for (let i = 0; i < ep.length; i++) {
+  for (let i = 1; i < ep.length; i++) {
     const element = ep[i];
-    const t = await element.getProperty("innerText").then((elm) => {return elm.jsonValue()});
-    // const t2 = await t.jsonValue();
-    ex.push(t);
+    // const t = await element.getProperty("innerText").then((elm) => {return elm.jsonValue()});
+    const value = await element.getProperty("value").then((elm) => {return elm.jsonValue()});
+    // const t2 = t.split(" ")[0];
+    // const t2 = t.concat(" (", value, ")");
+    ex.push(value);
   }
+  // await browser.close();
+  
   return ex;
 };
+
+// const getBrand = () => {return [1,2,3]}
+
+export default getBrand();

@@ -3,27 +3,33 @@ import './App.css';
 
 import MakerSelect from './MakerSelect';
 import Models from './Models';
-import Header from './components/Header'
+import Header from './components/Header';
+
+import getBrand from '../webscraper_test/standServer';
 
 class App extends Component {
   
   constructor(props) {
     super(props)
 
-    const makersArray = [
-      {id: 0, nome: 'Selecione uma marca'},
-      {id: 1, nome: 'Mercedes'},
-      {id: 2, nome: 'BMW'},
-      {id: 3, nome: 'Audi'},
-      {id: 4, nome: 'Renault'},
-    ]
+    // const makersArray = [
+    //   {id: 0, nome: 'Selecione uma marca'},
+    //   {id: 1, nome: 'Mercedes'},
+    //   {id: 2, nome: 'BMW'},
+    //   {id: 3, nome: 'Audi'},
+    //   {id: 4, nome: 'Renault'},
+    // ]
 
     this.state = {
-      makers: makersArray,
-      selectedMaker: makersArray[0],
+      makers: [],
+      selectedMaker: '',
       models: [],
     }
   }
+
+  // componentDidMount(){
+  //   getBrand().then(result => this.setState({makers: result}));
+  // }
 
   onChange = (option) => {
     let obj = this.state.makers[option.target.value]
